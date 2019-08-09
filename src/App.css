@@ -9,6 +9,23 @@
   flex-flow: row wrap;
 }
 
+.sound {
+  margin-top: 30px;
+}
+.mute {
+  background: url("./mute-icon.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 50px;
+}
+
+.speaker {
+  background: url("./speaker-icon.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  height: 50px;
+}
+
 /* Button shapes */
 .button {
   border-color: black;
