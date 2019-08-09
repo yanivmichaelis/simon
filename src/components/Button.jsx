@@ -22,7 +22,6 @@ const typeMap = {
   },
 }
 
-// Add onclick - print to console.
 function Button({ type, onClick, clicked }) {
   const style = cn('button', {
     [`${typeMap[type].position}`]: true,

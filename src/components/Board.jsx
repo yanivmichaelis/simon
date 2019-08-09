@@ -15,6 +15,23 @@ class Board extends React.Component {
     timer: 250, // ms, time to show clicked
   }
 
+  simonSays = () => {
+    // disable user clicks?
+    const { listOfClicks }= this.state;
+    const next = Math.floor(Math.random()*4+1);
+    listOfClicks.push(next);
+
+    listOfClicks.forEach((i) =>
+      setTimeout(this.select(i)(), this.state.timer + 100)
+    )
+    // wait for user input
+    // enable user clicks
+  }
+
+  userSays = () => {
+
+  }
+
   playSound = (type) => {
     // const playPromise = document.getElementById(`simon${type}`).play();
     // playPromise.then().catch();
@@ -25,13 +42,12 @@ class Board extends React.Component {
     }
   }
 
-  select = (type) => {
+  select = (index) => {
     return () => {
-      this.state.listOfClicks.push(type);
       console.log(this.state.listOfClicks);
 
-      this.playSound(type);
-      this.setState(({clicked: type}), this.diselect );
+      this.playSound(index);
+      this.setState(({clicked: index}), this.diselect );
       };
   }
 
@@ -39,7 +55,6 @@ class Board extends React.Component {
     return setTimeout(() => this.setState( {clicked: 0} ), this.state.timer);
   }
   toggleMute = () => {
-    console.log('mute :', this.state.mute);
     return this.setState( {mute: !this.state.mute} );
   }
 
@@ -57,6 +72,18 @@ class Board extends React.Component {
         }
       </div>
       <div className="controls">
+        <div className="turn">
+          PC |----| User |----| Error
+        </div>
+
+        <div className="start" onClick={this.simonSays  }>
+          Start |>
+        </div>
+
+        <div className="reset">
+          {`Reset <--`}
+        </div>
+
         <div className="score">
           Score {listOfClicks.length}
         </div>
