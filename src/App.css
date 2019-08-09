@@ -1,7 +1,45 @@
 .App {
   text-align: center;
+  width: 400px;
 }
 
+/*Alt: https://stackoverflow.com/questions/16263358/quarter-of-a-ring-with-css-and-html */
+.Board {
+  display: flex;
+  flex-flow: row wrap;
+}
+
+.button {
+  border-color: black;
+  border-width: 10px;
+  width: 200px;
+  height: 200px;
+}
+
+/* Extract radius size*/
+
+.green {
+  background-color: green;
+  border-bottom-left-radius: 150px;
+}
+
+.red {
+  background-color: red;
+  border-top-left-radius: 150px;
+}
+
+.yellow {
+  background-color: yellow;
+  border-top-right-radius: 150px;
+}
+
+.blue {
+  background-color: blue;
+  border-bottom-right-radius: 150px;
+}
+
+
+/* ====== Original react app ====== */
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
