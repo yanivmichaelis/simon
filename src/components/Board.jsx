@@ -10,39 +10,66 @@ import sound4 from './sounds/simonSound4.mp3'
 class Board extends React.Component {
   state = {
     clicked: 0,
-    listOfClicks: [3, 4, 4, 1, 3, 2, 3, 4], //[],
+    simonClicks: [],
+    userClicks: 0,
     mute: true,
 
     // The sounds are not the same length - so we need to support the longest sound (4/blue)
     timer: 450, // ms, time to show clicked
     timerSimon: 650, // ms, time between simon clicks
+    timerPlayerChange: 1000, //ms
   }
 
   simonSays = () => {
-    // disable user clicks?
-    const { listOfClicks }= this.state;
+    // TODO: disable user clicks
+    const { simonClicks }= this.state;
     const next = Math.floor(Math.random()*4+1);
-    listOfClicks.push(next);
+    simonClicks.push(next);
 
     this.playSimonMoves();
-    // wait for user input -> change icon to green
 
-    // enable user clicks
+    this.setState({userClicks: 0});
+    console.log('Users turn');
+    // wait for user input -> TODO: change icon to green/user
+    // TODO: enable user clicks
   }
 
   playSimonMoves = () => {
     let i = 0;
-    const { listOfClicks } = this.state;
+    const { simonClicks } = this.state;
     const intervalId = setInterval(() => {
-      this.select(listOfClicks[i]);
+      this.select(simonClicks[i]);
       i++;
-      if(i >= listOfClicks.length) {
+      if(i >= simonClicks.length) {
         clearInterval(intervalId);
       }
     }, this.state.timerSimon);
   }
 
-  userSays = () => {
+  userSays = (index) => {
+    const { userClicks, simonClicks, timerPlayerChange } = this.state;
+    this.select(index);
+
+    if(index !== simonClicks[userClicks]) {
+      console.log('FAILURE ');
+      this.reset();
+      // TODO: disable user clicks
+      // TODO: change icon to failure
+    } else {
+      console.log('Correct ');
+      this.setState({userClicks: userClicks + 1})
+
+      // console.log('index :', index);
+      // console.log('userClicks :', userClicks);
+      // console.log('simonClicks.length :', simonClicks.length);
+      // on change state? / componentDidChange
+      if (userClicks + 1 === simonClicks.length) {
+        console.log('Simons turn');
+        // TODO: disable user clicks
+        // TODO: change icon to simon
+        setTimeout(this.simonSays, timerPlayerChange)
+      }
+    }
 
   }
 
@@ -57,8 +84,6 @@ class Board extends React.Component {
   }
 
   select = (index) => {
-    console.log(this.state.listOfClicks);
-
     this.playSound(index);
     this.setState(({clicked: index}), this.diselect );
   }
@@ -70,18 +95,18 @@ class Board extends React.Component {
     return this.setState( {mute: !this.state.mute} );
   }
   reset = () => {
-    return this.setState( {listOfClicks: []} );
+    return this.setState( {simonClicks: [], userClicks: 0} );
   }
 
   render() {
-    const { listOfClicks, mute }= this.state;
+    const { simonClicks, mute }= this.state;
     return <>
       <div className="Board">
         {[1,2,3,4].map((id) =>
           <Button
             key={id + ':' + id}
             type={id}
-            onClick={() => this.select(id) }
+            onClick={() => this.userSays(id) }
             clicked={this.state.clicked === id}
           />)
         }
@@ -100,7 +125,7 @@ class Board extends React.Component {
         </div>
 
         <div className="score">
-          Score {listOfClicks.length}
+          Score {simonClicks.length}
         </div>
         <div className="sound">
           <div className={cn({mute: mute, speaker: !mute,})} onClick={() => this.toggleMute()} />
