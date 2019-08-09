@@ -9,6 +9,7 @@
   flex-flow: row wrap;
 }
 
+/* Button shapes */
 .button {
   border-color: black;
   border-width: 10px;
@@ -22,7 +23,6 @@
   --radius: 200px;
 }
 
-/* button shapes */
 .top-left {
   border-top-left-radius: var(--radius);
 }

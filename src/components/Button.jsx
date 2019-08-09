@@ -24,11 +24,11 @@ const typeMap = {
 
 // Add onclick - print to console.
 function Button({ type, onClick, clicked }) {
-  const style = cn({
+  const style = cn('button', {
+    [`${typeMap[type].position}`]: true,
     [`${typeMap[type].color}`]: !clicked,
     [`${typeMap[type].color}-clicked`]: clicked,
-    [`${typeMap[type].position}`]: true
-  }, 'button');
+  });
 
   return (
     <div className={style} onClick={(event) => onClick()} />
