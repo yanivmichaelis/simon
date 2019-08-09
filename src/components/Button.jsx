@@ -1,5 +1,5 @@
 import React from 'react';
-import '../App.css';
+import cn from 'classnames';
 
 const typeMap = {
   1: "red",
@@ -9,9 +9,14 @@ const typeMap = {
 }
 
 // Add onclick - print to console.
-function Button({ type, onClick}) {
+function Button({ type, onClick, clicked }) {
+  const style = cn({
+    [`${typeMap[type]}`]: !clicked,
+    [`${typeMap[type]}-clicked`]: clicked,
+  }, 'button');
+
   return (
-    <div className={typeMap[type] + ' button'} onClick={(event) => onClick()}>
+    <div className={style} onClick={(event) => onClick()}>
       {type}: {typeMap[type]}
     </div>
   );
