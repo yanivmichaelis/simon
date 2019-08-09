@@ -1,6 +1,6 @@
 #Simon memory game!
-Written in react as an educational project for everyone to code and play.
 
+Written in React as an educational project for everyone to code and play.
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts

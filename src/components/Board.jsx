@@ -7,12 +7,17 @@ import sound2 from './sounds/simonSound2.mp3'
 import sound3 from './sounds/simonSound3.mp3'
 import sound4 from './sounds/simonSound4.mp3'
 
+const USER = 'user';
+const SIMON = 'simon';
+const FAILURE = 'failure';
+
 class Board extends React.Component {
   state = {
     clicked: 0,
     simonClicks: [],
     userClicks: 0,
     mute: true,
+    player: 'simon',
 
     // The sounds are not the same length - so we need to support the longest sound (4/blue)
     timer: 450, // ms, time to show clicked
@@ -22,28 +27,29 @@ class Board extends React.Component {
 
   simonSays = () => {
     // TODO: disable user clicks
-    const { simonClicks }= this.state;
+    const { simonClicks } = this.state;
+    this.setState({player: SIMON});
     const next = Math.floor(Math.random()*4+1);
     simonClicks.push(next);
 
     this.playSimonMoves();
-
-    this.setState({userClicks: 0});
-    console.log('Users turn');
-    // wait for user input -> TODO: change icon to green/user
     // TODO: enable user clicks
   }
 
   playSimonMoves = () => {
     let i = 0;
-    const { simonClicks } = this.state;
+    const { simonClicks, timerSimon, timerPlayerChange } = this.state;
     const intervalId = setInterval(() => {
       this.select(simonClicks[i]);
       i++;
       if(i >= simonClicks.length) {
         clearInterval(intervalId);
+        setTimeout(() => {
+          console.log('Users turn');
+          this.setState({userClicks: 0, player: USER})
+        }, timerPlayerChange);
       }
-    }, this.state.timerSimon);
+    }, timerSimon);
   }
 
   userSays = (index) => {
@@ -52,6 +58,7 @@ class Board extends React.Component {
 
     if(index !== simonClicks[userClicks]) {
       console.log('FAILURE ');
+      this.setState({player: FAILURE});
       this.reset();
       // TODO: disable user clicks
       // TODO: change icon to failure
@@ -64,13 +71,15 @@ class Board extends React.Component {
       // console.log('simonClicks.length :', simonClicks.length);
       // on change state? / componentDidChange
       if (userClicks + 1 === simonClicks.length) {
-        console.log('Simons turn');
         // TODO: disable user clicks
         // TODO: change icon to simon
-        setTimeout(this.simonSays, timerPlayerChange)
+        setTimeout(() => {
+          console.log('Simons turn');
+          this.setState({player: SIMON});
+          this.simonSays();
+        }, timerPlayerChange)
       }
     }
-
   }
 
   playSound = (type) => {
@@ -89,17 +98,23 @@ class Board extends React.Component {
   }
 
   diselect = () => {
-    return setTimeout(() => this.setState( {clicked: 0} ), this.state.timer);
+    return setTimeout(() => this.setState({clicked: 0}), this.state.timer);
   }
   toggleMute = () => {
     return this.setState( {mute: !this.state.mute} );
   }
   reset = () => {
-    return this.setState( {simonClicks: [], userClicks: 0} );
+    return this.setState({simonClicks: [], userClicks: 0});
   }
 
   render() {
-    const { simonClicks, mute }= this.state;
+    const { simonClicks, mute, player } = this.state;
+    const currentPlayer =  cn({
+      'user-icon': player === USER,
+      'simon-icon': player === SIMON,
+      'failure-icon': player === FAILURE,
+    });
+
     return <>
       <div className="Board">
         {[1,2,3,4].map((id) =>
@@ -111,22 +126,13 @@ class Board extends React.Component {
           />)
         }
       </div>
+      <div className="score">
+        Score {simonClicks.length}
+      </div>
+
       <div className="controls">
-        <div className="turn">
-          PC |----| User |----| Error
-        </div>
-
-        <div className="start" onClick={this.simonSays  }>
-          Start |>
-        </div>
-
-        <div className="reset" onClick={this.reset} >
-          {`Reset <--`}
-        </div>
-
-        <div className="score">
-          Score {simonClicks.length}
-        </div>
+        <div className="reset" onClick={this.reset} />
+        <div className="start" onClick={this.simonSays} />
         <div className="sound">
           <div className={cn({mute: mute, speaker: !mute,})} onClick={() => this.toggleMute()} />
           <audio id="simon1"><source src={sound1} type="audio/mpeg" /></audio>
@@ -135,13 +141,12 @@ class Board extends React.Component {
           <audio id="simon4"><source src={sound4} type="audio/mpeg" /></audio>
         </div>
       </div>
+
+      <div className="turn">
+        Playing now: <div className={currentPlayer}/>
+      </div>
     </>;
   }
 }
 
 export default Board;
-
-// state = {
-//   turn: pc/human,
-//   moves: [list of moves],
-// }
