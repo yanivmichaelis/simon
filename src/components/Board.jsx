@@ -25,7 +25,8 @@ class Board extends React.Component {
     listOfClicks.push(next);
 
     this.playSimonMoves();
-    // wait for user input
+    // wait for user input -> change icon to green
+
     // enable user clicks
   }
 
@@ -33,7 +34,7 @@ class Board extends React.Component {
     let i = 0;
     const { listOfClicks } = this.state;
     const intervalId = setInterval(() => {
-      this.select(listOfClicks[i])();
+      this.select(listOfClicks[i]);
       i++;
       if(i >= listOfClicks.length) {
         clearInterval(intervalId);
@@ -56,12 +57,10 @@ class Board extends React.Component {
   }
 
   select = (index) => {
-    return () => {
-      console.log(this.state.listOfClicks);
+    console.log(this.state.listOfClicks);
 
-      this.playSound(index);
-      this.setState(({clicked: index}), this.diselect );
-      };
+    this.playSound(index);
+    this.setState(({clicked: index}), this.diselect );
   }
 
   diselect = () => {
@@ -82,7 +81,7 @@ class Board extends React.Component {
           <Button
             key={id + ':' + id}
             type={id}
-            onClick={this.select(id)}
+            onClick={() => this.select(id) }
             clicked={this.state.clicked === id}
           />)
         }
