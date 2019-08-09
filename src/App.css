@@ -1,21 +1,23 @@
 .App {
   text-align: center;
-  width: 440px;
+  width: 480px;
 }
 
 /*Alt: https://stackoverflow.com/questions/16263358/quarter-of-a-ring-with-css-and-html */
 .Board {
+  margin: 20px;
   display: flex;
   flex-flow: row wrap;
 }
 
-.sound {
-  margin-top: 30px;
+.controls {
+  /* margin-top: 30px; */
 }
 .mute {
   background: url("./mute-icon.svg");
   background-size: contain;
   background-repeat: no-repeat;
+  background-position: center;
   height: 50px;
 }
 
@@ -23,6 +25,7 @@
   background: url("./speaker-icon.svg");
   background-size: contain;
   background-repeat: no-repeat;
+  background-position: center;
   height: 50px;
 }
 
