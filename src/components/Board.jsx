@@ -10,9 +10,12 @@ import sound4 from './sounds/simonSound4.mp3'
 class Board extends React.Component {
   state = {
     clicked: 0,
-    listOfClicks: [],
+    listOfClicks: [3, 4, 4, 1, 3, 2, 3, 4], //[],
     mute: true,
-    timer: 250, // ms, time to show clicked
+
+    // The sounds are not the same length - so we need to support the longest sound (4/blue)
+    timer: 450, // ms, time to show clicked
+    timerSimon: 650, // ms, time between simon clicks
   }
 
   simonSays = () => {
@@ -21,11 +24,21 @@ class Board extends React.Component {
     const next = Math.floor(Math.random()*4+1);
     listOfClicks.push(next);
 
-    listOfClicks.forEach((i) =>
-      setTimeout(this.select(i)(), this.state.timer + 100)
-    )
+    this.playSimonMoves();
     // wait for user input
     // enable user clicks
+  }
+
+  playSimonMoves = () => {
+    let i = 0;
+    const { listOfClicks } = this.state;
+    const intervalId = setInterval(() => {
+      this.select(listOfClicks[i])();
+      i++;
+      if(i >= listOfClicks.length) {
+        clearInterval(intervalId);
+      }
+    }, this.state.timerSimon);
   }
 
   userSays = () => {
@@ -57,6 +70,9 @@ class Board extends React.Component {
   toggleMute = () => {
     return this.setState( {mute: !this.state.mute} );
   }
+  reset = () => {
+    return this.setState( {listOfClicks: []} );
+  }
 
   render() {
     const { listOfClicks, mute }= this.state;
@@ -80,7 +96,7 @@ class Board extends React.Component {
           Start |>
         </div>
 
-        <div className="reset">
+        <div className="reset" onClick={this.reset} >
           {`Reset <--`}
         </div>
 
