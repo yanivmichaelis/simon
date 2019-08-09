@@ -1,6 +1,6 @@
 .App {
   text-align: center;
-  width: 400px;
+  width: 440px;
 }
 
 /*Alt: https://stackoverflow.com/questions/16263358/quarter-of-a-ring-with-css-and-html */
@@ -12,49 +12,58 @@
 .button {
   border-color: black;
   border-width: 10px;
+  border-style: solid;
+
   width: 200px;
   height: 200px;
 }
 
-/* Extract radius size*/
+:root {
+  --radius: 200px;
+}
 
+/* button shapes */
+.top-left {
+  border-top-left-radius: var(--radius);
+}
+.top-right{
+  border-top-right-radius: var(--radius);
+}
+.bottom-left {
+  border-bottom-left-radius: var(--radius);
+}
+.bottom-right {
+  border-bottom-right-radius: var(--radius);
+}
+
+/* Colors */
 .red-clicked {
   background-color: rgb(221, 74, 87);
-  border-top-left-radius: 170px;
 }
 .red {
   background-color: rgb(222, 45, 60);
-  border-top-left-radius: 170px;
 }
 
 .yellow-clicked {
   background-color: rgb(243, 243, 129);
-  border-top-right-radius: 170px;
 }
 .yellow {
   background-color: rgb(233, 233, 12);
-  border-top-right-radius: 170px;
 }
-
 
 .green-clicked {
   background-color: rgb(75, 224, 75);
-  border-bottom-left-radius: 170px;
 }
 .green {
   background-color: rgb(26, 201, 26);
-  border-bottom-left-radius: 170px;
 }
 
 .blue-clicked {
   background-color: rgb(69, 141, 235);
-  border-bottom-right-radius: 170px;
 }
 .blue {
   background-color: rgb(22, 112, 230);
-  border-bottom-right-radius: 170px;
 }
-
 
 
 /* ====== Original react app ====== */

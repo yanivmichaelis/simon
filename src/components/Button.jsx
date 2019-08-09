@@ -1,24 +1,37 @@
 import React from 'react';
 import cn from 'classnames';
 
+// sounds from: https://www.freecodecamp.org/forum/t/external-mp3-audio-files/18450/2
+
 const typeMap = {
-  1: "red",
-  2: "yellow",
-  3: "green",
-  4: "blue",
+  1: {
+    color: "red",
+    position: "top-left",
+  },
+  2: {
+    color: "yellow",
+    position: "top-right",
+  },
+  3: {
+    color: "green",
+    position: "bottom-left",
+  },
+  4: {
+    color: "blue",
+    position: "bottom-right",
+  },
 }
 
 // Add onclick - print to console.
 function Button({ type, onClick, clicked }) {
   const style = cn({
-    [`${typeMap[type]}`]: !clicked,
-    [`${typeMap[type]}-clicked`]: clicked,
+    [`${typeMap[type].color}`]: !clicked,
+    [`${typeMap[type].color}-clicked`]: clicked,
+    [`${typeMap[type].position}`]: true
   }, 'button');
 
   return (
-    <div className={style} onClick={(event) => onClick()}>
-      {type}: {typeMap[type]}
-    </div>
+    <div className={style} onClick={(event) => onClick()} />
   );
 }
 
