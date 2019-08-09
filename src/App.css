@@ -1,11 +1,13 @@
 .App {
   text-align: center;
   width: 480px;
+
+  touch-action: manipulation; /* Disable mobile double-tap*/
 }
 
 /*Alt: https://stackoverflow.com/questions/16263358/quarter-of-a-ring-with-css-and-html */
 .Board {
-  margin: 20px;
+  margin: 10px;
   display: flex;
   flex-flow: row wrap;
 }
