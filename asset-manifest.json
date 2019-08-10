@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/simon/static/css/main.900337a7.chunk.css",
+    "main.js": "/simon/static/js/main.972d5bf6.chunk.js",
+    "main.js.map": "/simon/static/js/main.972d5bf6.chunk.js.map",
+    "runtime~main.js": "/simon/static/js/runtime~main.24bf3572.js",
+    "runtime~main.js.map": "/simon/static/js/runtime~main.24bf3572.js.map",
+    "static/js/2.3d56b785.chunk.js": "/simon/static/js/2.3d56b785.chunk.js",
+    "static/js/2.3d56b785.chunk.js.map": "/simon/static/js/2.3d56b785.chunk.js.map",
+    "index.html": "/simon/index.html",
+    "precache-manifest.287312d146916b617d81932e4bd91e1b.js": "/simon/precache-manifest.287312d146916b617d81932e4bd91e1b.js",
+    "service-worker.js": "/simon/service-worker.js",
+    "static/css/main.900337a7.chunk.css.map": "/simon/static/css/main.900337a7.chunk.css.map",
+    "static/media/App.css": "/simon/static/media/user-icon.4a27e5f4.svg",
+    "static/media/simonSound1.mp3": "/simon/static/media/simonSound1.319c7710.mp3",
+    "static/media/simonSound2.mp3": "/simon/static/media/simonSound2.c3c86e71.mp3",
+    "static/media/simonSound3.mp3": "/simon/static/media/simonSound3.f3c18b98.mp3",
+    "static/media/simonSound4.mp3": "/simon/static/media/simonSound4.f4a912ee.mp3"
+  }
+}
