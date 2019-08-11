@@ -25,16 +25,7 @@
   background-repeat: no-repeat;
   background-position: center;
   height: 50px;
-  width: 100px;
-  flex: 2;
-}
-.reset {
-  background: url("./reset-icon.svg");
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  height: 50px;
-  width: 100px;
+  width: 50px;
   flex: 1;
 }
 .sound {
@@ -55,6 +46,9 @@
   height: 50px;
 }
 
+.turn {
+  flex: 2;
+}
 .user-icon {
   background: url("./user-icon.svg");
   background-size: contain;
@@ -88,7 +82,7 @@
 }
 
 :root {
-  --radius: 200px;
+  --radius: 250px;
 }
 
 .top-left {
@@ -106,28 +100,28 @@
 
 /* Colors */
 .red-clicked {
-  background-color: rgb(219, 98, 108);
+  background-color: rgb(253, 176, 176);
 }
 .red {
   background-color: rgb(222, 45, 60);
 }
 
 .yellow-clicked {
-  background-color: rgb(245, 245, 156);
+  background-color: rgb(255, 255, 221);
 }
 .yellow {
   background-color: rgb(233, 233, 12);
 }
 
 .green-clicked {
-  background-color: rgb(105, 221, 105);
+  background-color: rgb(203, 255, 203);
 }
 .green {
   background-color: rgb(26, 201, 26);
 }
 
 .blue-clicked {
-  background-color: rgb(89, 151, 231);
+  background-color: rgb(211, 230, 255);
 }
 .blue {
   background-color: rgb(22, 112, 230);

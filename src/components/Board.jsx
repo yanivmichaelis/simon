@@ -131,8 +131,10 @@ class Board extends React.Component {
       </div>
 
       <div className="controls">
-        <div className="reset" onClick={this.reset} />
         <div className="start" onClick={this.simonSays} />
+        <div className="turn">
+          Playing now: <div className={currentPlayer}/>
+        </div>
         <div className="sound">
           <div className={cn({mute: mute, speaker: !mute,})} onClick={() => this.toggleMute()} />
           <audio id="simon1"><source src={sound1} type="audio/mpeg" /></audio>
@@ -142,9 +144,7 @@ class Board extends React.Component {
         </div>
       </div>
 
-      <div className="turn">
-        Playing now: <div className={currentPlayer}/>
-      </div>
+
     </>;
   }
 }
