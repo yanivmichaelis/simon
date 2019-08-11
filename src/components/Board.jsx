@@ -136,7 +136,7 @@ class Board extends React.Component {
           Playing now: <div className={currentPlayer}/>
         </div>
         <div className="sound">
-          <div className={cn({mute: mute, speaker: !mute,})} onClick={() => this.toggleMute()} />
+          {/* <div className={cn({mute: mute, speaker: !mute,})} onClick={() => this.toggleMute()} /> */}
           <audio id="simon1"><source src={sound1} type="audio/mpeg" /></audio>
           <audio id="simon2"><source src={sound2} type="audio/mpeg" /></audio>
           <audio id="simon3"><source src={sound3} type="audio/mpeg" /></audio>
