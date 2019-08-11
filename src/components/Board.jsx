@@ -20,9 +20,9 @@ class Board extends React.Component {
     player: 'simon',
 
     // The sounds are not the same length - so we need to support the longest sound (4/blue)
-    timer: 450, // ms, time to show clicked
-    timerSimon: 650, // ms, time between simon clicks
-    timerPlayerChange: 1000, //ms
+    timer: 200, // 450ms, time to show clicked
+    timerSimon: 400, // 650ms, time between simon clicks
+    timerPlayerChange: 600, //1000ms
   }
 
   simonSays = () => {
