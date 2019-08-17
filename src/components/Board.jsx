@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import cn from 'classnames';
 
 import Button from './Button';
@@ -17,7 +17,6 @@ const timerSimon = 400; // 650ms;  time between simon clicks
 const timerPlayerChange = 600; //1000ms;
 
 function Board() {
-  // TODO useReducer
   const [clicked, setClicked] = useState(0);
   const [simonClicks, setSimonClicks] = useState([]);
   const [userClicks, setUserClicks] = useState(0);
@@ -28,25 +27,42 @@ function Board() {
     setPlayer(SIMON);
     const next = Math.floor(Math.random()*4+1);
     setSimonClicks(simonClicks.concat(next));
-
-    playSimonMoves();
   }
 
-  function playSimonMoves() {
-    let i = 0;
-    const intervalId = setInterval(() => {
-      select(simonClicks[i]);
-      i++;
-      if(i >= simonClicks.length) {
-        clearInterval(intervalId);
-        setTimeout(() => {
-          console.log('Users turn');
-          setPlayer(USER);
-          setUserClicks(0);
-        }, timerPlayerChange);
-      }
-    }, timerSimon);
-  }
+  useEffect(() => { //on change of simonClicks, start playing, not edge case
+    // console.log(simonClicks);
+    if(simonClicks.length > 0) {
+      let i = 0;
+      const intervalId = setInterval(() => {
+        select(simonClicks[i]);
+        i++;
+        if(i >= simonClicks.length) {
+          clearInterval(intervalId);
+          setTimeout(() => {
+            console.log('Users turn');
+            setPlayer(USER);
+            setUserClicks(0);
+          }, timerPlayerChange);
+        }
+      }, timerSimon);
+    }
+  }, [simonClicks]); //TODO missing 'select' function. fix with useMemo/Callback
+
+  // function playSimonMoves() { // playSimonMoves copied into useEffect
+  //   let i = 0;
+  //   const intervalId = setInterval(() => {
+  //     select(simonClicks[i]);
+  //     i++;
+  //     if(i >= simonClicks.length) {
+  //       clearInterval(intervalId);
+  //       setTimeout(() => {
+  //         console.log('Users turn');
+  //         setPlayer(USER);
+  //         setUserClicks(0);
+  //       }, timerPlayerChange);
+  //     }
+  //   }, timerSimon);
+  // }
 
   function userSays(index) {
     select(index);
