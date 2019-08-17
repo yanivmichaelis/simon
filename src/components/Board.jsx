@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import cn from 'classnames';
 
 import Button from './Button';
@@ -11,142 +11,131 @@ const USER = 'user';
 const SIMON = 'simon';
 const FAILURE = 'failure';
 
-class Board extends React.Component {
-  state = {
-    clicked: 0,
-    simonClicks: [],
-    userClicks: 0,
-    mute: true,
-    player: 'simon',
+// The sounds are not the same length - so we need to support the longest sound (4/blue)
+const timer = 200; // 450ms;  time to show clicked
+const timerSimon = 400; // 650ms;  time between simon clicks
+const timerPlayerChange = 600; //1000ms;
 
-    // The sounds are not the same length - so we need to support the longest sound (4/blue)
-    timer: 200, // 450ms, time to show clicked
-    timerSimon: 400, // 650ms, time between simon clicks
-    timerPlayerChange: 600, //1000ms
-  }
+function Board() {
+  // TODO useReducer
+  const [clicked, setClicked] = useState(0);
+  const [simonClicks, setSimonClicks] = useState([]);
+  const [userClicks, setUserClicks] = useState(0);
+  const [mute, setMute] = useState(true);
+  const [player, setPlayer] = useState(SIMON); //TODO: infer disabled
 
-  simonSays = () => {
-    // TODO: disable user clicks
-    const { simonClicks } = this.state;
-    this.setState({player: SIMON});
+  function simonSays() {
+    setPlayer(SIMON);
     const next = Math.floor(Math.random()*4+1);
-    simonClicks.push(next);
+    setSimonClicks(simonClicks.concat(next));
 
-    this.playSimonMoves();
-    // TODO: enable user clicks
+    playSimonMoves();
   }
 
-  playSimonMoves = () => {
+  function playSimonMoves() {
     let i = 0;
-    const { simonClicks, timerSimon, timerPlayerChange } = this.state;
     const intervalId = setInterval(() => {
-      this.select(simonClicks[i]);
+      select(simonClicks[i]);
       i++;
       if(i >= simonClicks.length) {
         clearInterval(intervalId);
         setTimeout(() => {
           console.log('Users turn');
-          this.setState({userClicks: 0, player: USER})
+          setPlayer(USER);
+          setUserClicks(0);
         }, timerPlayerChange);
       }
     }, timerSimon);
   }
 
-  userSays = (index) => {
-    const { userClicks, simonClicks, timerPlayerChange } = this.state;
-    this.select(index);
+  function userSays(index) {
+    select(index);
 
     if(index !== simonClicks[userClicks]) {
       console.log('FAILURE ');
-      this.setState({player: FAILURE});
-      this.reset();
-      // TODO: disable user clicks
-      // TODO: change icon to failure
+      setPlayer(FAILURE);
+      reset();
     } else {
       console.log('Correct ');
-      this.setState({userClicks: userClicks + 1})
+      setUserClicks(userClicks + 1);
 
       // console.log('index :', index);
       // console.log('userClicks :', userClicks);
       // console.log('simonClicks.length :', simonClicks.length);
       // on change state? / componentDidChange
       if (userClicks + 1 === simonClicks.length) {
-        // TODO: disable user clicks
-        // TODO: change icon to simon
         setTimeout(() => {
           console.log('Simons turn');
-          this.setState({player: SIMON});
-          this.simonSays();
+          simonSays();
         }, timerPlayerChange)
       }
     }
   }
 
-  playSound = (type) => {
+  function playSound(type) {
     // const playPromise = document.getElementById(`simon${type}`).play();
     // playPromise.then().catch();
 
     // OR sound = new Audio(mp3).play()
-    if (!this.state.mute) {
+    if (!mute) {
       document.getElementById(`simon${type}`).play();
     }
   }
 
-  select = (index) => {
-    this.playSound(index);
-    this.setState(({clicked: index}), this.diselect );
+  function select(index) {
+    playSound(index);
+    setClicked(index);
+    diselect(); // TODO: useEffect here or within the button
   }
 
-  diselect = () => {
-    return setTimeout(() => this.setState({clicked: 0}), this.state.timer);
+  function diselect() {
+    return setTimeout(() => setClicked(0), timer);
   }
-  toggleMute = () => {
-    return this.setState( {mute: !this.state.mute} );
+  function toggleMute() {
+    return setMute(!mute);
   }
-  reset = () => {
-    return this.setState({simonClicks: [], userClicks: 0});
+  function reset() {
+    setUserClicks(0);
+    return setSimonClicks([]);
   }
 
-  render() {
-    const { simonClicks, mute, player } = this.state;
-    const currentPlayer =  cn({
-      'user-icon': player === USER,
-      'simon-icon': player === SIMON,
-      'failure-icon': player === FAILURE,
-    });
+  const currentPlayer =  cn({
+    'user-icon': player === USER,
+    'simon-icon': player === SIMON,
+    'failure-icon': player === FAILURE,
+  });
 
-    return <>
-      <div className="Board">
-        {[1,2,3,4].map((id) =>
-          <Button
-            key={id + ':' + id}
-            type={id}
-            onClick={() => this.userSays(id) }
-            clicked={this.state.clicked === id}
-          />)
-        }
+  return <>
+    <div className="Board">
+      {[1,2,3,4].map((id) =>
+        <Button
+          key={id + ':' + id}
+          type={id}
+          onClick={() => userSays(id) }
+          clicked={clicked === id}
+        />)
+      }
+    </div>
+    <div className="score">
+      Score {simonClicks.length}
+    </div>
+
+    <div className="controls">
+      <div className="start" onClick={simonSays} />
+      <div className="turn">
+        Playing now: <div className={currentPlayer}/>
       </div>
-      <div className="score">
-        Score {simonClicks.length}
+      <div className="sound">
+        {/* <div className={cn({mute: mute, speaker: !mute,})} onClick={() => toggleMute()} /> */}
+        <audio id="simon1"><source src={sound1} type="audio/mpeg" /></audio>
+        <audio id="simon2"><source src={sound2} type="audio/mpeg" /></audio>
+        <audio id="simon3"><source src={sound3} type="audio/mpeg" /></audio>
+        <audio id="simon4"><source src={sound4} type="audio/mpeg" /></audio>
       </div>
-
-      <div className="controls">
-        <div className="start" onClick={this.simonSays} />
-        <div className="turn">
-          Playing now: <div className={currentPlayer}/>
-        </div>
-        <div className="sound">
-          {/* <div className={cn({mute: mute, speaker: !mute,})} onClick={() => this.toggleMute()} /> */}
-          <audio id="simon1"><source src={sound1} type="audio/mpeg" /></audio>
-          <audio id="simon2"><source src={sound2} type="audio/mpeg" /></audio>
-          <audio id="simon3"><source src={sound3} type="audio/mpeg" /></audio>
-          <audio id="simon4"><source src={sound4} type="audio/mpeg" /></audio>
-        </div>
-      </div>
+    </div>
 
 
-    </>;
-  }
+  </>;
 }
 
 export default Board;
