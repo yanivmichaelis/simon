@@ -14,7 +14,7 @@ const FAILURE = 'failure';
 // The sounds are not the same length - so we need to support the longest sound (4/blue)
 const timer = 200; // 450ms;  time to show clicked
 const timerSimon = 400; // 650ms;  time between simon clicks
-const timerPlayerChange = 600; //1000ms;
+const timerChangePlayerTurn = 600; //1000ms;
 
 function Board() {
   const [clicked, setClicked] = useState(0);
@@ -35,7 +35,7 @@ function Board() {
     if(simonClicks.length > 0) {
       let i = 0;
       const intervalId = setInterval(() => {
-        select(simonClicks[i]);
+        setClicked(simonClicks[i]);
         i++;
         if(i >= simonClicks.length) {
           clearInterval(intervalId);
@@ -43,48 +43,31 @@ function Board() {
             console.log('Users turn');
             setPlayer(USER);
             setUserClicks(0);
-          }, timerPlayerChange);
+          }, timerChangePlayerTurn);
         }
       }, timerSimon);
     }
   }, [simonClicks]); //TODO missing 'select' function. fix with useMemo/Callback
 
-  // function playSimonMoves() { // playSimonMoves copied into useEffect
-  //   let i = 0;
-  //   const intervalId = setInterval(() => {
-  //     select(simonClicks[i]);
-  //     i++;
-  //     if(i >= simonClicks.length) {
-  //       clearInterval(intervalId);
-  //       setTimeout(() => {
-  //         console.log('Users turn');
-  //         setPlayer(USER);
-  //         setUserClicks(0);
-  //       }, timerPlayerChange);
-  //     }
-  //   }, timerSimon);
-  // }
-
   function userSays(index) {
-    select(index);
+    setClicked(index); // select(index);
 
     if(index !== simonClicks[userClicks]) {
-      console.log('FAILURE ');
+      // console.log('FAILURE ');
       setPlayer(FAILURE);
       reset();
     } else {
-      console.log('Correct ');
+      // console.log('Correct ');
       setUserClicks(userClicks + 1);
 
       // console.log('index :', index);
       // console.log('userClicks :', userClicks);
       // console.log('simonClicks.length :', simonClicks.length);
-      // on change state? / componentDidChange
       if (userClicks + 1 === simonClicks.length) {
         setTimeout(() => {
-          console.log('Simons turn');
+          // console.log('Simons turn');
           simonSays();
-        }, timerPlayerChange)
+        }, timerChangePlayerTurn)
       }
     }
   }
@@ -99,15 +82,13 @@ function Board() {
     }
   }
 
-  function select(index) {
-    playSound(index);
-    setClicked(index);
-    diselect(); // TODO: useEffect here or within the button
-  }
+  useEffect(()=> {
+    // console.log(clicked);
+    // console.log("set timeout");
+    playSound(clicked);
+    setTimeout(() => setClicked(0), timer);
+  });
 
-  function diselect() {
-    return setTimeout(() => setClicked(0), timer);
-  }
   function toggleMute() {
     return setMute(!mute);
   }
