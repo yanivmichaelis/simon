@@ -20,6 +20,7 @@ function Board() {
   const [clicked, setClicked] = useState(0);
   const [simonClicks, setSimonClicks] = useState([]);
   const [userClicks, setUserClicks] = useState(0);
+  const [topScore, settopScore] = useState(0);
   const [mute, setMute] = useState(true);
   const [player, setPlayer] = useState(SIMON); //TODO: infer disabled
 
@@ -111,6 +112,11 @@ function Board() {
     return setMute(!mute);
   }
   function reset() {
+    const numberOfMovers = simonClicks.length - 1;
+    if (numberOfMovers > topScore) {
+      settopScore(numberOfMovers);
+    }
+
     setUserClicks(0);
     return setSimonClicks([]);
   }
@@ -133,13 +139,15 @@ function Board() {
       }
     </div>
     <div className="score">
-      Score {simonClicks.length}
+      Score {simonClicks.length ? simonClicks.length - 1 : 0}
     </div>
-
+    <div>
+      High Score: {topScore}
+    </div>
     <div className="controls">
       <div className="start" onClick={simonSays} />
       <div className="turn">
-        Playing now: <div className={currentPlayer}/>
+        Turn: <div className={currentPlayer}/>
       </div>
       <div className="sound">
         {/* <div className={cn({mute: mute, speaker: !mute,})} onClick={() => toggleMute()} /> */}
