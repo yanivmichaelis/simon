@@ -24,21 +24,13 @@ function Board() {
   const [mute, setMute] = useState(true);
   const [player, setPlayer] = useState(SIMON); //TODO: infer disabled
 
-  function simonSays() {
-    setPlayer(SIMON);
-    const next = Math.floor(Math.random()*4+1);
-    setSimonClicks(simonClicks.concat(next));
-  }
-
-
   useEffect(()=> {
-    const timeout = player === USER ? timer: timerSimon; // TODO: buggy
+    const timeout = player === USER ? timer: timerSimon;
     playSound(clicked);
     setTimeout(() => setClicked(0), timeout);
   });
 
-  useEffect(() => { //on change of simonClicks, start playing, not edge case
-    // console.log(simonClicks);
+  useEffect(() => {
     if(simonClicks.length > 0) {
       let i = 0;
       const intervalId = setInterval(() => {
@@ -56,23 +48,22 @@ function Board() {
     }
   }, [simonClicks]);
 
+  function simonSays() {
+    setPlayer(SIMON);
+    const next = Math.floor(Math.random()*4+1);
+    setSimonClicks(simonClicks.concat(next));
+  }
+
   function userSays(index) {
     setClicked(index);
 
     if(index !== simonClicks[userClicks]) {
-      // console.log('FAILURE ');
       setPlayer(FAILURE);
       reset();
     } else {
-      // console.log('Correct ');
       setUserClicks(userClicks + 1);
-
-      // console.log('index :', index);
-      // console.log('userClicks :', userClicks);
-      // console.log('simonClicks.length :', simonClicks.length);
       if (userClicks + 1 === simonClicks.length) {
         setTimeout(() => {
-          // console.log('Simons turn');
           simonSays();
         }, timerChangePlayerTurn)
       }
@@ -112,7 +103,7 @@ function Board() {
     <div className="Board">
       {[1,2,3,4].map((id) =>
         <Button
-          key={id + ':' + id}
+          key={id+ clicked + player}
           type={id}
           onClick={() => userSays(id) }
           clicked={clicked === id}
@@ -138,8 +129,6 @@ function Board() {
         <audio id="simon4"><source src={sound4} type="audio/mpeg" /></audio>
       </div>
     </div>
-
-
   </>;
 }
 
