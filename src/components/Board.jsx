@@ -30,6 +30,13 @@ function Board() {
     setSimonClicks(simonClicks.concat(next));
   }
 
+
+  useEffect(()=> {
+    const timeout = player === USER ? timer: timerSimon; // TODO: buggy
+    playSound(clicked);
+    setTimeout(() => setClicked(0), timeout);
+  });
+
   useEffect(() => { //on change of simonClicks, start playing, not edge case
     // console.log(simonClicks);
     if(simonClicks.length > 0) {
@@ -47,10 +54,10 @@ function Board() {
         }
       }, timerSimon);
     }
-  }, [simonClicks]); //TODO missing 'select' function. fix with useMemo/Callback
+  }, [simonClicks]);
 
   function userSays(index) {
-    setClicked(index); // select(index);
+    setClicked(index);
 
     if(index !== simonClicks[userClicks]) {
       // console.log('FAILURE ');
@@ -81,13 +88,6 @@ function Board() {
       document.getElementById(`simon${type}`).play();
     }
   }
-
-  useEffect(()=> {
-    // console.log(clicked);
-    // console.log("set timeout");
-    playSound(clicked);
-    setTimeout(() => setClicked(0), timer);
-  });
 
   function toggleMute() {
     return setMute(!mute);
