@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import cn from 'classnames';
+// import cn from 'classnames';
 
 import Button from './Button';
 import sound1 from './sounds/simonSound1.mp3'
@@ -12,9 +12,9 @@ const SIMON = 'simon';
 const FAILURE = 'failure';
 
 // The sounds are not the same length - so we need to support the longest sound (4/blue)
-const timer = 200; // 450ms;  time to show clicked
-const timerSimon = 400; // 650ms;  time between simon clicks
-const timerChangePlayerTurn = 600; //1000ms;
+const timer = 200;
+const timerSimon = 450;
+const timerChangePlayerTurn = 600;
 
 function Board() {
   const [clicked, setClicked] = useState(0);
@@ -22,12 +22,11 @@ function Board() {
   const [userClicks, setUserClicks] = useState(0);
   const [topScore, settopScore] = useState(0);
   const [mute, setMute] = useState(true);
-  const [player, setPlayer] = useState(SIMON); //TODO: infer disabled
+  const [player, setPlayer] = useState(SIMON);
 
   useEffect(()=> {
-    const timeout = player === USER ? timer: timerSimon;
     playSound(clicked);
-    setTimeout(() => setClicked(0), timeout);
+    setTimeout(() => setClicked(0), timer);
   });
 
   useEffect(() => {
@@ -93,12 +92,6 @@ function Board() {
     return setSimonClicks([]);
   }
 
-  const currentPlayer =  cn({
-    'user-icon': player === USER,
-    'simon-icon': player === SIMON,
-    'failure-icon': player === FAILURE,
-  });
-
   return <>
     <div className="Board">
       {[1,2,3,4].map((id) =>
@@ -119,7 +112,7 @@ function Board() {
     <div className="controls">
       <div className="start" onClick={simonSays} />
       <div className="turn">
-        Turn: <div className={currentPlayer}/>
+        Turn: <div className={`${player}-icon`}/>
       </div>
       <div className="sound">
         {/* <div className={cn({mute: mute, speaker: !mute,})} onClick={() => toggleMute()} /> */}
