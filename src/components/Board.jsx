@@ -24,10 +24,13 @@ function Board() {
   const [mute, setMute] = useState(true);
   const [player, setPlayer] = useState(SIMON);
 
-  useEffect(()=> {
+  // Using a named function, to add context.
+  useEffect(deselectButton);
+
+  function deselectButton() {
     playSound(clicked);
     setTimeout(() => setClicked(0), timer);
-  });
+  }
 
   useEffect(() => {
     if(simonClicks.length > 0) {
