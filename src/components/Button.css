@@ -1,0 +1,64 @@
+/* Button shapes */
+.button {
+  border-color: black;
+  border-width: 10px;
+  border-style: solid;
+
+  width: 200px;
+  height: 200px;
+}
+
+:root {
+  --radius: 250px;
+}
+
+.top-left {
+  border-top-left-radius: var(--radius);
+}
+.top-right{
+  border-top-right-radius: var(--radius);
+}
+.bottom-left {
+  border-bottom-left-radius: var(--radius);
+}
+.bottom-right {
+  border-bottom-right-radius: var(--radius);
+}
+
+/* Colors */
+
+/* Can also work - but will need a syntetic event/click */
+/* .red:active {
+  background-color: #fdb0b0;
+} */
+
+.red-clicked {
+  background-color: #fdb0b0;
+}
+
+.red {
+  /* background-color: #de2d3c; */
+  background: linear-gradient(270deg, #de2d3c, #fdb0b0);
+  animation: AnimationName 1s ease-out;
+}
+
+.yellow-clicked {
+  background-color: rgb(255, 255, 221);
+}
+.yellow {
+  background-color: rgb(233, 233, 12);
+}
+
+.green-clicked {
+  background-color: rgb(203, 255, 203);
+}
+.green {
+  background-color: rgb(26, 201, 26);
+}
+
+.blue-clicked {
+  background-color: rgb(211, 230, 255);
+}
+.blue {
+  background-color: rgb(22, 112, 230);
+}
