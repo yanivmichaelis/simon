@@ -17,12 +17,13 @@ const timerSimon = 450;
 const timerChangePlayerTurn = 600;
 
 const initialState = { topScore: 0 };
+
 function reducer(state, action) {
   switch (action.type) {
     case 'incrementTopScore':
       return { topScore: action.payload };
     default:
-      console.log('error :', action);
+      throw new Error('Undefined action: ', JSON.stringify(action));
   }
 }
 
@@ -101,7 +102,6 @@ function Board() {
     if (numberOfMoves > state.topScore) {
       dispatch({ type: 'incrementTopScore', payload: numberOfMoves });
     }
-
     setUserClicks(0);
     return setSimonClicks([]);
   }
