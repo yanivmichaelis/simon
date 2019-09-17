@@ -16,14 +16,17 @@ const timer = 200;
 const timerSimon = 450;
 const timerChangePlayerTurn = 600;
 
-const initialState = { topScore: 0, player: SIMON };
+const initialState = { topScore: 0, player: SIMON, userClicks: 0, simonClicks: [] };
+
+// eslint-disable-next-line no-fallthrough
 
 function reducer(state, action) {
   switch (action.type) {
     case 'incrementTopScore':
       return { topScore: action.payload };
+    case 'reset':
+      return { player: FAILURE, userClicks: 0, simonClicks: [] };
     case 'setPlayer':
-      // on action.payload=== FAILURE - reset aswell?
       return { player: action.payload };
     default:
       throw new Error('Undefined action: ', JSON.stringify(action));
@@ -36,7 +39,6 @@ function Board() {
   const [simonClicks, setSimonClicks] = useState([]);
   const [userClicks, setUserClicks] = useState(0);
   const [mute, setMute] = useState(true);
-  // const [player, setPlayer] = useState(SIMON);
 
   // Using a named function, to add context.
   useEffect(deselectButton);
@@ -73,7 +75,6 @@ function Board() {
     setClicked(index);
 
     if (index !== simonClicks[userClicks]) {
-      dispatch({ type: 'setPlayer', payload: FAILURE });
       reset();
     } else {
       setUserClicks(userClicks + 1);
@@ -99,13 +100,14 @@ function Board() {
     return setMute(!mute);
   }
 
+  //one action for both?
+  // add the 'incrementTopScore' payload to the 'reset'
   function reset() {
     const numberOfMoves = simonClicks.length - 1;
     if (numberOfMoves > state.topScore) {
       dispatch({ type: 'incrementTopScore', payload: numberOfMoves });
     }
-    setUserClicks(0);
-    return setSimonClicks([]);
+    dispatch({ type: 'reset' });
   }
 
   return (
