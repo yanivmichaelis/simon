@@ -18,29 +18,30 @@ const timerChangePlayerTurn = 600;
 
 const initialState = { topScore: 0, player: SIMON, userClicks: 0, simonClicks: [] };
 
-// eslint-disable-next-line no-fallthrough
-
 function reducer(state, action) {
   switch (action.type) {
-    case 'incrementTopScore':
-      return { topScore: action.payload };
+    case 'setTopScore':
+      return { ...state, topScore: action.payload };
+    case 'setUserClicks':
+      return { ...state, userClicks: action.payload };
+    case 'setSimonClicks':
+      return { ...state, simonClicks: action.payload };
     case 'reset':
-      return { player: FAILURE, userClicks: 0, simonClicks: [] };
+      return { ...state, player: FAILURE, userClicks: 0, simonClicks: [] }; //TODO initialState (init) funciton with TopScore/FAILURE as param?
     case 'setPlayer':
-      return { player: action.payload };
+      return { ...state, player: action.payload };
     default:
-      throw new Error('Undefined action: ', JSON.stringify(action));
+      console.log('Undefined action:', JSON.stringify(action));
+      throw new Error('Undefined action');
   }
 }
 
 function Board() {
   const [state, dispatch] = useReducer(reducer, initialState);
   const [clicked, setClicked] = useState(0);
-  const [simonClicks, setSimonClicks] = useState([]);
-  const [userClicks, setUserClicks] = useState(0);
   const [mute, setMute] = useState(true);
 
-  // Using a named function, to add context.
+  // Using a named function, to add some context and better explain which effect this is.
   useEffect(deselectButton);
 
   function deselectButton() {
@@ -49,36 +50,37 @@ function Board() {
   }
 
   useEffect(() => {
-    if (simonClicks.length > 0) {
+    if (state.simonClicks.length > 0) {
       let i = 0;
       const intervalId = setInterval(() => {
-        setClicked(simonClicks[i]);
+        setClicked(state.simonClicks[i]);
         i++;
-        if (i >= simonClicks.length) {
+        if (i >= state.simonClicks.length) {
           clearInterval(intervalId);
           setTimeout(() => {
-            dispatch({ type: 'setPlayer', payload: USER });
-            setUserClicks(0);
+            dispatch({ type: 'setPlayer', payload: USER }); // TODO: merge the two?
+            dispatch({ type: 'setUserClicks', payload: 0 });
           }, timerChangePlayerTurn);
         }
       }, timerSimon);
     }
-  }, [simonClicks]);
+  }, [state.simonClicks]);
 
   function simonSays() {
     dispatch({ type: 'setPlayer', payload: SIMON });
     const next = Math.floor(Math.random() * 4 + 1);
-    setSimonClicks(simonClicks.concat(next));
+    dispatch({ type: 'setSimonClicks', payload: state.simonClicks.concat(next) });
   }
 
   function userSays(index) {
     setClicked(index);
 
-    if (index !== simonClicks[userClicks]) {
+    if (index !== state.simonClicks[state.userClicks]) {
       reset();
     } else {
-      setUserClicks(userClicks + 1);
-      if (userClicks + 1 === simonClicks.length) {
+      dispatch({ type: 'setUserClicks', payload: state.userClicks + 1 });
+
+      if (state.userClicks + 1 === state.simonClicks.length) {
         setTimeout(() => {
           simonSays();
         }, timerChangePlayerTurn);
@@ -100,14 +102,12 @@ function Board() {
     return setMute(!mute);
   }
 
-  //one action for both?
-  // add the 'incrementTopScore' payload to the 'reset'
   function reset() {
-    const numberOfMoves = simonClicks.length - 1;
+    const numberOfMoves = state.simonClicks.length - 1;
     if (numberOfMoves > state.topScore) {
-      dispatch({ type: 'incrementTopScore', payload: numberOfMoves });
+      dispatch({ type: 'setTopScore', payload: numberOfMoves });
     }
-    dispatch({ type: 'reset' });
+    dispatch({ type: 'reset' }); // TODO: should the reset calculate the topScore?
   }
 
   return (
@@ -122,7 +122,9 @@ function Board() {
           />
         ))}
       </div>
-      <div className="score">Score {simonClicks.length ? simonClicks.length - 1 : 0}</div>
+      <div className="score">
+        Score {state.simonClicks.length ? state.simonClicks.length - 1 : 0}
+      </div>
       <div>High Score: {state.topScore}</div>
       <div className="controls">
         <div className="start" onClick={simonSays} />
