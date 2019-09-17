@@ -16,12 +16,16 @@ const timer = 200;
 const timerSimon = 450;
 const timerChangePlayerTurn = 600;
 
-const initialState = { topScore: 0 };
+const initialState = { topScore: 0, player: SIMON };
 
 function reducer(state, action) {
   switch (action.type) {
     case 'incrementTopScore':
       return { topScore: action.payload };
+    case 'setPlayer':
+      console.log(action.payload, ' turn');
+      // on failure - reset aswell?
+      return { player: action.payload };
     default:
       throw new Error('Undefined action: ', JSON.stringify(action));
   }
@@ -33,7 +37,7 @@ function Board() {
   const [simonClicks, setSimonClicks] = useState([]);
   const [userClicks, setUserClicks] = useState(0);
   const [mute, setMute] = useState(true);
-  const [player, setPlayer] = useState(SIMON);
+  // const [player, setPlayer] = useState(SIMON);
 
   // Using a named function, to add context.
   useEffect(deselectButton);
@@ -52,8 +56,7 @@ function Board() {
         if (i >= simonClicks.length) {
           clearInterval(intervalId);
           setTimeout(() => {
-            console.log('Users turn');
-            setPlayer(USER);
+            dispatch({ type: 'setPlayer', payload: USER });
             setUserClicks(0);
           }, timerChangePlayerTurn);
         }
@@ -62,7 +65,7 @@ function Board() {
   }, [simonClicks]);
 
   function simonSays() {
-    setPlayer(SIMON);
+    dispatch({ type: 'setPlayer', payload: SIMON });
     const next = Math.floor(Math.random() * 4 + 1);
     setSimonClicks(simonClicks.concat(next));
   }
@@ -71,7 +74,7 @@ function Board() {
     setClicked(index);
 
     if (index !== simonClicks[userClicks]) {
-      setPlayer(FAILURE);
+      dispatch({ type: 'setPlayer', payload: FAILURE });
       reset();
     } else {
       setUserClicks(userClicks + 1);
@@ -111,7 +114,7 @@ function Board() {
       <div className="Board">
         {[1, 2, 3, 4].map(id => (
           <Button
-            key={id + clicked + player}
+            key={id + clicked + state.player}
             type={id}
             onClick={() => userSays(id)}
             clicked={clicked === id}
@@ -123,7 +126,7 @@ function Board() {
       <div className="controls">
         <div className="start" onClick={simonSays} />
         <div className="turn">
-          Turn: <div className={`${player}-icon`} />
+          Turn: <div className={`${state.player}-icon`} />
         </div>
         <div className="sound">
           {/* <div className={cn({mute: mute, speaker: !mute,})} onClick={() => toggleMute()} /> */}
