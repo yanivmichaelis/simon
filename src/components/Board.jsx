@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 // import cn from 'classnames';
 
 import Button from './Button';
@@ -16,11 +16,21 @@ const timer = 200;
 const timerSimon = 450;
 const timerChangePlayerTurn = 600;
 
+const initialState = { topScore: 0 };
+function reducer(state, action) {
+  switch (action.type) {
+    case 'incrementTopScore':
+      return { topScore: action.payload };
+    default:
+      console.log('error :', action);
+  }
+}
+
 function Board() {
+  const [state, dispatch] = useReducer(reducer, initialState);
   const [clicked, setClicked] = useState(0);
   const [simonClicks, setSimonClicks] = useState([]);
   const [userClicks, setUserClicks] = useState(0);
-  const [topScore, settopScore] = useState(0);
   const [mute, setMute] = useState(true);
   const [player, setPlayer] = useState(SIMON);
 
@@ -85,10 +95,11 @@ function Board() {
   function toggleMute() {
     return setMute(!mute);
   }
+
   function reset() {
-    const numberOfMovers = simonClicks.length - 1;
-    if (numberOfMovers > topScore) {
-      settopScore(numberOfMovers);
+    const numberOfMoves = simonClicks.length - 1;
+    if (numberOfMoves > state.topScore) {
+      dispatch({ type: 'incrementTopScore', payload: numberOfMoves });
     }
 
     setUserClicks(0);
@@ -108,7 +119,7 @@ function Board() {
         ))}
       </div>
       <div className="score">Score {simonClicks.length ? simonClicks.length - 1 : 0}</div>
-      <div>High Score: {topScore}</div>
+      <div>High Score: {state.topScore}</div>
       <div className="controls">
         <div className="start" onClick={simonSays} />
         <div className="turn">
