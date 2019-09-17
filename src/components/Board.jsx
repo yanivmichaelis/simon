@@ -23,8 +23,7 @@ function reducer(state, action) {
     case 'incrementTopScore':
       return { topScore: action.payload };
     case 'setPlayer':
-      console.log(action.payload, ' turn');
-      // on failure - reset aswell?
+      // on action.payload=== FAILURE - reset aswell?
       return { player: action.payload };
     default:
       throw new Error('Undefined action: ', JSON.stringify(action));
