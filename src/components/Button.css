@@ -15,7 +15,7 @@
 .top-left {
   border-top-left-radius: var(--radius);
 }
-.top-right{
+.top-right {
   border-top-right-radius: var(--radius);
 }
 .bottom-left {

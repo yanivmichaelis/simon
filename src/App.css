@@ -20,7 +20,7 @@
   /* background: red; */
 }
 .start {
-  background: url("./play-icon.svg");
+  background: url('./play-icon.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -32,14 +32,14 @@
   flex: 1;
 }
 .mute {
-  background: url("./mute-icon.svg");
+  background: url('./mute-icon.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   height: 50px;
 }
 .speaker {
-  background: url("./speaker-icon.svg");
+  background: url('./speaker-icon.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -50,21 +50,21 @@
   flex: 2;
 }
 .user-icon {
-  background: url("./user-icon.svg");
+  background: url('./user-icon.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   height: 50px;
 }
 .simon-icon {
-  background: url("./simon-icon.svg");
+  background: url('./simon-icon.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
   height: 50px;
 }
 .failure-icon {
-  background: url("./failure-icon.svg");
+  background: url('./failure-icon.svg');
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;

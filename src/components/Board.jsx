@@ -2,10 +2,10 @@ import React, { useState, useEffect } from 'react';
 // import cn from 'classnames';
 
 import Button from './Button';
-import sound1 from './sounds/simonSound1.mp3'
-import sound2 from './sounds/simonSound2.mp3'
-import sound3 from './sounds/simonSound3.mp3'
-import sound4 from './sounds/simonSound4.mp3'
+import sound1 from './sounds/simonSound1.mp3';
+import sound2 from './sounds/simonSound2.mp3';
+import sound3 from './sounds/simonSound3.mp3';
+import sound4 from './sounds/simonSound4.mp3';
 
 const USER = 'user';
 const SIMON = 'simon';
@@ -33,12 +33,12 @@ function Board() {
   }
 
   useEffect(() => {
-    if(simonClicks.length > 0) {
+    if (simonClicks.length > 0) {
       let i = 0;
       const intervalId = setInterval(() => {
         setClicked(simonClicks[i]);
         i++;
-        if(i >= simonClicks.length) {
+        if (i >= simonClicks.length) {
           clearInterval(intervalId);
           setTimeout(() => {
             console.log('Users turn');
@@ -52,14 +52,14 @@ function Board() {
 
   function simonSays() {
     setPlayer(SIMON);
-    const next = Math.floor(Math.random()*4+1);
+    const next = Math.floor(Math.random() * 4 + 1);
     setSimonClicks(simonClicks.concat(next));
   }
 
   function userSays(index) {
     setClicked(index);
 
-    if(index !== simonClicks[userClicks]) {
+    if (index !== simonClicks[userClicks]) {
       setPlayer(FAILURE);
       reset();
     } else {
@@ -67,7 +67,7 @@ function Board() {
       if (userClicks + 1 === simonClicks.length) {
         setTimeout(() => {
           simonSays();
-        }, timerChangePlayerTurn)
+        }, timerChangePlayerTurn);
       }
     }
   }
@@ -95,37 +95,43 @@ function Board() {
     return setSimonClicks([]);
   }
 
-  return <>
-    <div className="Board">
-      {[1,2,3,4].map((id) =>
-        <Button
-          key={id+ clicked + player}
-          type={id}
-          onClick={() => userSays(id) }
-          clicked={clicked === id}
-        />)
-      }
-    </div>
-    <div className="score">
-      Score {simonClicks.length ? simonClicks.length - 1 : 0}
-    </div>
-    <div>
-      High Score: {topScore}
-    </div>
-    <div className="controls">
-      <div className="start" onClick={simonSays} />
-      <div className="turn">
-        Turn: <div className={`${player}-icon`}/>
+  return (
+    <>
+      <div className="Board">
+        {[1, 2, 3, 4].map(id => (
+          <Button
+            key={id + clicked + player}
+            type={id}
+            onClick={() => userSays(id)}
+            clicked={clicked === id}
+          />
+        ))}
       </div>
-      <div className="sound">
-        {/* <div className={cn({mute: mute, speaker: !mute,})} onClick={() => toggleMute()} /> */}
-        <audio id="simon1"><source src={sound1} type="audio/mpeg" /></audio>
-        <audio id="simon2"><source src={sound2} type="audio/mpeg" /></audio>
-        <audio id="simon3"><source src={sound3} type="audio/mpeg" /></audio>
-        <audio id="simon4"><source src={sound4} type="audio/mpeg" /></audio>
+      <div className="score">Score {simonClicks.length ? simonClicks.length - 1 : 0}</div>
+      <div>High Score: {topScore}</div>
+      <div className="controls">
+        <div className="start" onClick={simonSays} />
+        <div className="turn">
+          Turn: <div className={`${player}-icon`} />
+        </div>
+        <div className="sound">
+          {/* <div className={cn({mute: mute, speaker: !mute,})} onClick={() => toggleMute()} /> */}
+          <audio id="simon1">
+            <source src={sound1} type="audio/mpeg" />
+          </audio>
+          <audio id="simon2">
+            <source src={sound2} type="audio/mpeg" />
+          </audio>
+          <audio id="simon3">
+            <source src={sound3} type="audio/mpeg" />
+          </audio>
+          <audio id="simon4">
+            <source src={sound4} type="audio/mpeg" />
+          </audio>
+        </div>
       </div>
-    </div>
-  </>;
+    </>
+  );
 }
 
 export default Board;
