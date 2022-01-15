@@ -1,20 +1,23 @@
 {
   "files": {
-    "main.css": "/simon/static/css/main.798d2884.chunk.css",
-    "main.js": "/simon/static/js/main.1e669d68.chunk.js",
-    "main.js.map": "/simon/static/js/main.1e669d68.chunk.js.map",
-    "runtime~main.js": "/simon/static/js/runtime~main.24bf3572.js",
-    "runtime~main.js.map": "/simon/static/js/runtime~main.24bf3572.js.map",
-    "static/js/2.e0324ace.chunk.js": "/simon/static/js/2.e0324ace.chunk.js",
-    "static/js/2.e0324ace.chunk.js.map": "/simon/static/js/2.e0324ace.chunk.js.map",
-    "index.html": "/simon/index.html",
-    "precache-manifest.3f9f8fca92601b145f86144c80b40796.js": "/simon/precache-manifest.3f9f8fca92601b145f86144c80b40796.js",
-    "service-worker.js": "/simon/service-worker.js",
-    "static/css/main.798d2884.chunk.css.map": "/simon/static/css/main.798d2884.chunk.css.map",
-    "static/media/App.css": "/simon/static/media/user-icon.4a27e5f4.svg",
-    "static/media/simonSound1.mp3": "/simon/static/media/simonSound1.319c7710.mp3",
-    "static/media/simonSound2.mp3": "/simon/static/media/simonSound2.c3c86e71.mp3",
-    "static/media/simonSound3.mp3": "/simon/static/media/simonSound3.f3c18b98.mp3",
-    "static/media/simonSound4.mp3": "/simon/static/media/simonSound4.f4a912ee.mp3"
-  }
+    "main.css": "/static/css/main.47e7fe89.css",
+    "main.js": "/static/js/main.5cecceee.js",
+    "static/media/simon-icon.svg": "/static/media/simon-icon.725ea6b755083b14f747.svg",
+    "static/media/user-icon.svg": "/static/media/user-icon.722792217af4c562b248.svg",
+    "static/media/mute-icon.svg": "/static/media/mute-icon.bccce9acad254d8c4ad5.svg",
+    "static/media/failure-icon.svg": "/static/media/failure-icon.15b51bcea678a5bcdc67.svg",
+    "static/media/simonSound1.mp3": "/static/media/simonSound1.be139b4b99ec2b2fae15.mp3",
+    "static/media/speaker-icon.svg": "/static/media/speaker-icon.9c9ddf64d96f92109212.svg",
+    "static/media/simonSound3.mp3": "/static/media/simonSound3.3d5f915659a6055e6377.mp3",
+    "static/media/simonSound2.mp3": "/static/media/simonSound2.1eb5aa4cd41771f65406.mp3",
+    "static/media/simonSound4.mp3": "/static/media/simonSound4.60f3cc7d5750955854a5.mp3",
+    "index.html": "/index.html",
+    "static/media/play-icon.svg": "/static/media/play-icon.efb2d8110cc7480bb4c7.svg",
+    "main.47e7fe89.css.map": "/static/css/main.47e7fe89.css.map",
+    "main.5cecceee.js.map": "/static/js/main.5cecceee.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.47e7fe89.css",
+    "static/js/main.5cecceee.js"
+  ]
 }
